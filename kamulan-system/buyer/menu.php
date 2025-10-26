@@ -42,7 +42,7 @@ foreach ($cart as $c) {
         border-radius: 12px;
       }
       h2 {
-        color: #ff7043;
+        color: #556B2F;
         margin-bottom: 20px;
       }
       .category-buttons {
@@ -54,14 +54,14 @@ foreach ($cart as $c) {
         padding: 8px 15px;
         margin: 5px;
         border-radius: 20px;
-        background: #ffa726;
+        background: #556B2F;
         color: white;
         font-size: 14px;
         transition: 0.2s;
       }
       .category-buttons a:hover,
       .category-buttons a.active {
-        background: #f57c00;
+        background: #556B2F;
       }
       .search-box {
         text-align: center;
@@ -106,16 +106,17 @@ foreach ($cart as $c) {
         overflow: hidden;
       }
       .price {
-        color: #fff;
-        background: #ff7043;
-        padding: 5px 10px;
-        border-radius: 5px;
+        color: #556B2F;        /* dark green text so it's visible */
+        background: transparent; /* no background */
+        padding: 0;
+        border-radius: 0;
         font-weight: bold;
         display: inline-block;
         margin-bottom: 10px;
-      }
-      .button {
-        background: #ff7043;
+        font-size: 1rem;
+}
+   .button {
+        background: #556B2F;
         color: white;
         border: none;
         padding: 8px 16px;
@@ -124,7 +125,7 @@ foreach ($cart as $c) {
         transition: 0.2s;
       }
       .button:hover {
-        background: #f4511e;
+        background: #556B2F;
       }
       .not-available {
         background: #ccc;
@@ -150,7 +151,7 @@ foreach ($cart as $c) {
       }
       .floating-cart h4 {
         margin-top: 0;
-        color: #ff7043;
+        color: #556B2F;
         text-align: center;
       }
       .floating-cart table {
@@ -200,6 +201,7 @@ foreach ($cart as $c) {
             <h4><?= htmlspecialchars($it['name']) ?></h4>
             <p><?= htmlspecialchars($it['description']) ?></p>
             <div class="price">₱<?= number_format($it['price'],2) ?></div>
+
 
             <?php if ($it['available'] == 0): ?>
               <div class="not-available">Not Available</div>
@@ -252,21 +254,46 @@ foreach ($cart as $c) {
       });
 
       // AJAX Add to Cart
-      document.querySelectorAll('.addToCartForm').forEach(form => {
-        form.addEventListener('submit', function(e) {
-          e.preventDefault();
-          const formData = new FormData(this);
+      document.querySelectorAll('.addToCartForm').forEach(form=>{
+    form.addEventListener('submit', e=>{
+        e.preventDefault();
+        const formData = new FormData(form);
+        const qty = parseInt(formData.get('qty'));
+        if(qty <= 0){
+            alert('Quantity must be at least 1');
+            return;
+        }
 
-          fetch('/kamulan-system/buyer/cart_add.php', {
-            method: 'POST',
+        fetch('/kamulan-system/buyer/cart_ajax.php', {
+            method:'POST',
             body: formData
-          })
-          .then(res => res.text())
-          .then(html => {
-            document.getElementById('miniCartContent').innerHTML = html;
-          });
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            if(data.success){
+                const miniCart = document.getElementById('miniCartContent');
+                if(data.cart.length===0){
+                    miniCart.innerHTML = `<p style="text-align:center;color:#666;">Cart is empty</p>`;
+                    return;
+                }
+                let html = '<table>';
+                data.cart.forEach(c=>{
+                    html += `<tr>
+                                <td>${c.name}</td>
+                                <td>x${c.qty}</td>
+                                <td style="text-align:right;">₱${(c.price*c.qty).toFixed(2)}</td>
+                            </tr>`;
+                });
+                html += '</table>';
+                html += `<div class="total">Total: ₱${data.subtotal}</div>`;
+                html += `<a href="/kamulan-system/buyer/cart.php"><button class="button">Go to Checkout</button></a>`;
+                miniCart.innerHTML = html;
+            }
         });
-      });
+    });
+});
+
+
     </script>
   </body>
 </html>

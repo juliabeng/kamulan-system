@@ -238,12 +238,16 @@ const menuBtn = document.getElementById('menuBtn');
 const storesBtn = document.getElementById('storesBtn');
 const menuSec = document.getElementById('menuSection');
 const storeSec = document.getElementById('storesSection');
+const searchBar = document.querySelector('.search-bar');
 
 menuBtn.addEventListener('click', () => {
   menuSec.classList.remove('hidden');
   storeSec.classList.add('hidden');
   menuBtn.classList.add('active');
   storesBtn.classList.remove('active');
+
+  // Show search bar when on Menu tab
+  searchBar.style.display = 'flex';
 });
 
 storesBtn.addEventListener('click', () => {
@@ -251,8 +255,14 @@ storesBtn.addEventListener('click', () => {
   menuSec.classList.add('hidden');
   storesBtn.classList.add('active');
   menuBtn.classList.remove('active');
+
+  // Hide search bar when on Branches tab
+  searchBar.style.display = 'none';
 });
 </script>
+
+
+
 
 <!-- CAROUSEL SCRIPT --> 
  <script> 
@@ -311,15 +321,9 @@ document.querySelector('.search-bar button').addEventListener('click', function 
   });
 });
 
-document.getElementById('menuBtn').addEventListener('click', () => { 
-  const featured = document.querySelector('.featured-scroll'); 
-  if (featured) featured.scrollIntoView({ behavior: 'smooth' }); 
-  }); 
-document.getElementById('storesBtn').addEventListener('click', () => { 
-  const branches = document.querySelector('.branches'); 
-  if (branches) branches.scrollIntoView({ behavior: 'smooth' });
-  });
+// Removed auto-scroll on tab click
 </script>
+
 
 </body>
 </html>

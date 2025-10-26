@@ -1,7 +1,7 @@
 /* ======== GLOBAL VARIABLES ======== */
 :root {
   --primary: #556b2f;      /* army green */
-  --accent: #d26a3b;       /* terracotta orange */
+  --accent: #556b2f;       
   --dark-brown: #3e2f1c;   /* deep brown */
   --light-bg: #f5f2ed;     /* soft beige background */
   --text-dark: #2c2c2c;
@@ -465,8 +465,7 @@ h2 {
   background: #87986a;
 }
 
-.hidden {
-  display: none;
+.hidden { display: none;
 }
 
 @keyframes slideDown {
@@ -582,7 +581,88 @@ h2 {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   padding: 20px;
+} 
+/* ===== REMOVE BACKGROUND FROM MENU PRICES ===== */
+.price {
+    background: transparent !important;  /* remove any background */
+    color: #3e432e !important;           /* make text visible */
+    padding: 0 !important;               /* remove extra padding */
+    border-radius: 0 !important;         /* remove rounding */
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 10px;
 }
+
+/* Compact Add to Cart Form */
+.addToCartForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.addToCartForm input[name="qty"] {
+  width: 30px;
+  padding: 3px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.addToCartForm button {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
+/* Optional: keep input and button together */
+.add-cart-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;              /* small space between input & button */
+}
+
+/* Centered search bar on menu page with slightly smaller width */
+main.container .search-box {
+  text-align: center;
+  margin: 20px auto;
+  max-width: 600px;             /* liit ng kaunti mula 600px */
+  width: 100%;
+  padding: 6px 10px;
+  border: 2px solid #556B2F !important;  /* dark green border */
+  border-radius: 12px;
+  background-color: #f8f9f5 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Input field inside search box */
+main.container .search-box input {
+  flex: 1;
+  border: none !important;       /* removes inner line */
+  outline: none;
+  padding: 10px 12px;
+  font-size: 14px;
+  background: transparent !important;
+}
+
+/* Focus effect */
+main.container .search-box input:focus {
+  box-shadow: 0 0 6px rgba(85,107,47,0.2);
+}
+
+
+
+
+
+
+
+
 
 
 

@@ -1,9 +1,10 @@
 <?php
 require_once(__DIR__ . '/../config/session.php');
-
 $user = $_SESSION['user'] ?? null;
 $userName = $user['name'] ?? '';
+$currentPage = basename($_SERVER['PHP_SELF']); // detect current page
 ?>
+
 <header class="site-header" style="
   display: flex;
   align-items: center;
@@ -25,16 +26,14 @@ $userName = $user['name'] ?? '';
 
   <!-- NAVIGATION -->
   <nav class="nav" style="display: flex; align-items: center; gap: 22px;">
-    <a href="/kamulan-system/buyer/index.php" 
-       style="color:white; text-decoration:none; font-weight:500; transition:0.3s;">Home</a>
-    <a href="/kamulan-system/buyer/menu.php" 
-       style="color:white; text-decoration:none; font-weight:500; transition:0.3s;">Menu</a>
+    <a href="/kamulan-system/buyer/index.php" class="<?= $currentPage === 'index.php' ? 'active-page' : '' ?>">Home</a>
+    <a href="/kamulan-system/buyer/menu.php" class="<?= $currentPage === 'menu.php' ? 'active-page' : '' ?>">Menu</a>
 
     <?php if ($user): ?>
-      <a href="/kamulan-system/buyer/cart.php" style="color:white; text-decoration:none; font-weight:500; transition:0.3s;">Cart</a>
-      <a href="/kamulan-system/buyer/orders.php" style="color:white; text-decoration:none; font-weight:500; transition:0.3s;">My Orders</a>
-      <a href="/kamulan-system/buyer/profile.php" style="color:white; text-decoration:none; font-weight:500; transition:0.3s;">Profile</a>
-      <a href="/kamulan-system/auth/logout.php" class="nav-link logout" onclick="confirmLogout(event)" style="color:white; text-decoration:none; font-weight:500; transition:0.3s;">Logout</a>
+      <a href="/kamulan-system/buyer/cart.php" class="<?= $currentPage === 'cart.php' ? 'active-page' : '' ?>">Cart</a>
+      <a href="/kamulan-system/buyer/orders.php" class="<?= $currentPage === 'orders.php' ? 'active-page' : '' ?>">My Orders</a>
+      <a href="/kamulan-system/buyer/profile.php" class="<?= $currentPage === 'profile.php' ? 'active-page' : '' ?>">Profile</a>
+      <a href="/kamulan-system/auth/logout.php" class="nav-link logout" onclick="confirmLogout(event)">Logout</a>
       <span style="
         margin-left:15px;
         background:#fff;
@@ -48,16 +47,28 @@ $userName = $user['name'] ?? '';
         👋 Welcome, <?= htmlspecialchars($userName) ?>
       </span>
     <?php else: ?>
-      <a href="/kamulan-system/auth/login.php" style="color:white; text-decoration:none; font-weight:500; transition:0.3s;">Login</a>
+      <a href="/kamulan-system/auth/login.php">Login</a>
     <?php endif; ?>
   </nav>
 
-  <!-- HOVER EFFECTS -->
   <style>
+    .site-header a {
+      color:white; 
+      text-decoration:none; 
+      font-weight:500; 
+      transition:0.3s;
+      position: relative;
+    }
     .site-header a:hover {
-      color: #f4e04d; /* warm yellow accent */
+      color: #000000;
       transform: scale(1.05);
-      text-shadow: 0 0 6px rgba(255,255,255,0.3);
+       
+    }
+    /* ACTIVE PAGE STYLE */
+    .site-header a.active-page {
+      font-weight:700;
+      color: #000000;
+    
     }
   </style>
 </header>
@@ -70,3 +81,21 @@ function confirmLogout(event) {
   }
 }
 </script>
+
+<div class="header-cart">
+    🛒 Cart: <span id="cart-count"><?= count($_SESSION['cart'] ?? []) ?></span>
+</div>
+
+<style>
+.header-cart {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ff7043;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
